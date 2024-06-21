@@ -53,13 +53,17 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+                #if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+		
 		#if polymod
 		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
 		#end
 		
 		#if sys
-		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
-			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
+		if (!sys.FileSystem.exists("assets/replays"))
+			sys.FileSystem.createDirectory("assets/replays");
 		#end
 
 		@:privateAccess
