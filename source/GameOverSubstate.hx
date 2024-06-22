@@ -13,7 +13,15 @@ class GameOverSubstate extends MusicBeatSubstate
 	var camFollow:FlxObject;
 
 	var stageSuffix:String = "";
+	public static var instance:GameOverSubstate;
 
+	override function create()
+	{
+		instance = this;
+
+		super.create();
+	}
+	
 	public function new(x:Float, y:Float)
 	{
 		var daStage = PlayState.curStage;
