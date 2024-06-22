@@ -3429,6 +3429,11 @@ class PlayState extends MusicBeatState
 				// nada 
 			}
 
+	public function addBehindGF(obj:FlxObject)
+	{
+		insert(members.indexOf(gfGroup), obj);
+	}
+			
 	function noteMiss(direction:Int = 1, daNote:Note):Void
 	{
 		if (!boyfriend.stunned)
@@ -4144,8 +4149,12 @@ class PlayState extends MusicBeatState
 			{
 				return FlxColor.fromRGB(Red, Green, Blue, Alpha);
 			});
-			
 
+			script.setVariable("addBehindGF", function(obj:FlxObject)
+			{
+				addBehindGF(obj);
+			});
+			
 			script.setVariable("curStep", curStep);
 			script.setVariable("curBeat", curBeat);
 			script.setVariable("bpm", SONG.bpm);
