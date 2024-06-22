@@ -9,7 +9,7 @@ import flixel.util.FlxTimer;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
-	var bf:Boyfriend;
+	public var bf:Boyfriend;
 	var camFollow:FlxObject;
 
 	var stageSuffix:String = "";
