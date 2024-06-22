@@ -4121,7 +4121,8 @@ class PlayState extends MusicBeatState
 
 	var curLight:Int = 0;
 	
-	function initScripts()
+	
+	static function initScripts()
 	{
 		if (scripts == null)
 			return;
