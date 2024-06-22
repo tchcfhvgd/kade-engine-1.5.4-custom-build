@@ -1,11 +1,8 @@
 package script;
 
 import StringTools;
-import data.ClientPrefs;
-import data.Highscore;
-import data.Paths;
-import data.StageData;
-import data.WeekData;
+import Highscore;
+import Paths;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -20,21 +17,18 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import haxe.Json;
-import objects.Boyfriend;
-import objects.Character;
-import objects.Note;
-import objects.NoteSplash;
-import objects.StrumNote;
+import Boyfriend;
+import Character;
+import Note;
 import openfl.Lib;
 import openfl.filters.ShaderFilter;
 import openfl.system.Capabilities;
 import script.Script.ScriptReturn;
-import shaders.FlxRunTimeShader;
-import song.Conductor;
-import song.Section;
-import song.Song;
-import states.game.PlayState;
-import util.CoolUtil;
+import Conductor;
+import Section;
+import Song;
+import PlayState;
+import CoolUtil;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -120,7 +114,6 @@ class ScriptUtil
 
 		// Shaders
 		script.set("FlxShader", FlxShader);
-		script.set("FlxRuntimeShader", FlxRuntimeShader);
 
 		// Color Functions
 		script.set("colorFromRGB", function(Red:Int, Green:Int, Blue:Int, Alpha:Int = 255)
@@ -143,10 +136,7 @@ class ScriptUtil
 			return;
 
 		// Save Data
-		script.set("ClientPrefs", ClientPrefs);
-		script.set("WeekData", WeekData);
 		script.set("Highscore", Highscore);
-		script.set("StageData", StageData);
 
 		// Assets
 		script.set("Paths", Paths);
@@ -158,8 +148,6 @@ class ScriptUtil
 
 		// Objects
 		script.set("Note", Note);
-		script.set("StrumNote", StrumNote);
-		script.set("NoteSplash", NoteSplash);
 		script.set("Character", Character);
 		script.set("Boyfriend", Boyfriend);
 	}
