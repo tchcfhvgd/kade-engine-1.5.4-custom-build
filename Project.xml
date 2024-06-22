@@ -34,6 +34,11 @@
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
+	<define name="MODS_ALLOWED" if="desktop || android" />
+	<define name="LUA_ALLOWED" if="desktop || android" />
+	<define name="VIDEOS_ALLOWED" if="web || windows || android" unless="32bits"/>
+	
+	
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
@@ -122,6 +127,7 @@
 	<haxelib name="discord_rpc" if="windows"/>
 	<haxelib name="extension-androidtools" if="mobile"/>
 	<haxelib name="linc_luajit" />
+	<haxelib name="hxCodec" if="desktop || android" />
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
