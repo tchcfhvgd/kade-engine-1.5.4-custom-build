@@ -18,7 +18,7 @@ import flixel.graphics.FlxGraphic;
 import openfl.utils.AssetManifest;
 import openfl.utils.AssetLibrary;
 import flixel.system.FlxAssets;
-import flixel.group.FlxSpriteGroup;
+
 import lime.app.Application;
 import lime.media.AudioContext;
 import lime.media.AudioManager;
@@ -99,7 +99,7 @@ class PlayState extends MusicBeatState
 
 	public static var songPosBG:FlxSprite;
 	public static var songPosBar:FlxBar;
-	public var isDead:Bool = false;
+	public static var isDead:Bool = false;
 
 	public static var rep:Replay;
 	public static var loadRep:Bool = false;
@@ -4277,5 +4277,9 @@ class PlayState extends MusicBeatState
 				}
 			}
 		});
+	}
+	public static inline function getInstance()
+	{
+		return PlayState.instance.isDead ? GameOverSubstate.instance : PlayState.instance;
 	}
 }
