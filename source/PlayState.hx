@@ -580,23 +580,7 @@ class PlayState extends MusicBeatState
 			case 'mallEvil':
 			{
 					curStage = 'mallEvil';
-					var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.image('christmas/evilBG','week5'));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(0.2, 0.2);
-					bg.active = false;
-					bg.setGraphicSize(Std.int(bg.width * 0.8));
-					bg.updateHitbox();
-					add(bg);
-
-					var evilTree:FlxSprite = new FlxSprite(300, -300).loadGraphic(Paths.image('christmas/evilTree','week5'));
-					evilTree.antialiasing = true;
-					evilTree.scrollFactor.set(0.2, 0.2);
-					add(evilTree);
-
-					var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.image("christmas/evilSnow",'week5'));
-						evilSnow.antialiasing = true;
-					add(evilSnow);
-					}
+			}
 			case 'school':
 			{
 					curStage = 'school';
@@ -3510,8 +3494,6 @@ class PlayState extends MusicBeatState
 	    if (script != null)
 		{
 			script.executeFunc("noteMiss");
-			script.setVariable("daNote.noteType", daNote.noteType);
-			script.setVariable("daNote.isSustainNote", daNote.isSustainNote);
 		}
 	}
 
@@ -3683,8 +3665,6 @@ class PlayState extends MusicBeatState
 					if (script != null)
 		{
 			script.executeFunc("goodNoteHit");
-			script.setVariable("note.noteType", note.noteType);
-			script.setVariable("note.isSustainNote", note.isSustainNote);
 		}
 
 
@@ -4189,7 +4169,6 @@ class PlayState extends MusicBeatState
 			script.setVariable("Paths", Paths);
 			script.setVariable("CENTER", FlxTextAlign.CENTER);
 			script.setVariable("FlxTextFormat", FlxTextFormat);
-			script.setVariable("InputFormatter", InputFormatter);
 			script.setVariable("FlxTextFormatMarkerPair", FlxTextFormatMarkerPair);
 
 			script.runScript(hxdata);
