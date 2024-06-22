@@ -9,6 +9,7 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Assets;
 import haxe.io.Path;
+import cpp.vm.Gc;
 import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.Sprite;
@@ -86,12 +87,29 @@ class Main extends Sprite
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
 		toggleFPS(FlxG.save.data.fps);
+
+		FlxG.signals.preStateSwitch.add(function () {
+			if (!Main.skipNextDump) {
+				Paths.clearStoredMemory(true);
+				FlxG.bitmap.dumpCache();
+			}
+			clearMajor();
+		});
+		FlxG.signals.postStateSwitch.add(function () {
+			Paths.clearUnusedMemory();
+			clearMajor();
+			Main.skipNextDump = false;
+		});
 	}
 
 	var game:FlxGame;
 
 	var fpsCounter:FPS;
 
+	public static function clearMajor() {
+		Gc.run(true);
+		Gc.compact();
+	}
 	public function toggleFPS(fpsEnabled:Bool):Void {
 		fpsCounter.visible = fpsEnabled;
 	}
