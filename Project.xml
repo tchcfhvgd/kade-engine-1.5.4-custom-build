@@ -170,7 +170,7 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<!-- _________________________________ Custom _______________________________ -->
-
+        <haxedef name="no-deprecation-warnings"/>
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 	
 	<icon path="art/icon8.png" size='8'/>
