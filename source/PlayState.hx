@@ -99,7 +99,7 @@ class PlayState extends MusicBeatState
 
 	public static var songPosBG:FlxSprite;
 	public static var songPosBar:FlxBar;
-	public static var isDead:Bool = false;
+	public var isDead:Bool = false;
 
 	public static var rep:Replay;
 	public static var loadRep:Bool = false;
