@@ -74,6 +74,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			else
 				FlxG.switchState(new FreeplayState());
 			PlayState.loadRep = false;
+			PlayState.isDead = false;
 		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
@@ -106,6 +107,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (!isEnding)
 		{
 			isEnding = true;
+			PlayState.isDead = false;
 			bf.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
 			FlxG.sound.play(Paths.music('gameOverEnd' + stageSuffix));
