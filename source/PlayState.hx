@@ -2,6 +2,7 @@ package;
 
 import openfl.ui.KeyLocation;
 import openfl.events.Event;
+import flixel.addons.display.FlxBackdrop;
 import haxe.EnumTools;
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
@@ -64,10 +65,13 @@ import openfl.filters.ShaderFilter;
 #if windows
 import Discord.DiscordClient;
 #end
-#if windows
+#if sys
 import Sys;
+import sys.io.File;
 import sys.FileSystem;
 #end
+
+import hscript.Script;
 
 using StringTools;
 
@@ -194,6 +198,8 @@ class PlayState extends MusicBeatState
 	var santa:FlxSprite;
 
 	var fc:Bool = true;
+	// Hscript
+	public var script:Script;
 
 	var bgGirls:BackgroundGirls;
 	var wiggleShit:WiggleEffect = new WiggleEffect();
@@ -943,6 +949,8 @@ class PlayState extends MusicBeatState
 		playerStrums = new FlxTypedGroup<FlxSprite>();
 		cpuStrums = new FlxTypedGroup<FlxSprite>();
 
+		startScript();
+		
 		// startCountdown();
 
 		if (SONG.song == null)
@@ -1145,6 +1153,12 @@ class PlayState extends MusicBeatState
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN,handleInput);
 
+		if (script != null)
+		{
+			script.executeFunc("onCreate");
+			script.executeFunc("onCreatePost");
+		}
+		
 		super.create();
 	}
 
@@ -3493,6 +3507,12 @@ class PlayState extends MusicBeatState
 
 			updateAccuracy();
 		}
+	    if (script != null)
+		{
+			script.executeFunc("noteMiss");
+			script.setVariable("daNote.noteType", daNote.noteType);
+			script.setVariable("daNote.isSustainNote", daNote.isSustainNote);
+		}
 	}
 
 	/*function badNoteCheck()
@@ -3659,6 +3679,13 @@ class PlayState extends MusicBeatState
 					if (luaModchart != null)
 						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
 					#end
+					
+					if (script != null)
+		{
+			script.executeFunc("goodNoteHit");
+			script.setVariable("note.noteType", note.noteType);
+			script.setVariable("note.isSustainNote", note.isSustainNote);
+		}
 
 
 					if(!loadRep && note.mustPress)
@@ -3806,6 +3833,12 @@ class PlayState extends MusicBeatState
 			luaModchart.executeState('stepHit',[curStep]);
 		}
 		#end
+		
+		if (script != null)
+		{
+			script.setVariable("curStep", curStep);
+			script.executeFunc("onStepHit");
+		}
 
 		/*if (SONG.song.toLowerCase() == 'your song')
 			switch (curStep)
@@ -3846,6 +3879,12 @@ class PlayState extends MusicBeatState
 			luaModchart.executeState('beatHit',[curBeat]);
 		}
 		#end
+		
+		if (script != null)
+		{
+			script.setVariable("curBeat", curBeat);
+			script.executeFunc("onBeatHit");
+		}
 
 		if (curSong == 'Tutorial' && dad.curCharacter == 'gf') {
 			if (curBeat % 2 == 1 && dad.animOffsets.exists('danceLeft'))
@@ -4037,6 +4076,126 @@ class PlayState extends MusicBeatState
 			add(boyfriend);
 			iconP1.animation.play(id);
 		}
+		
+	public function startScript()
+	{
+		var formattedFolder:String = Paths.formatToSongPath(SONG.song);
+		//var curStageFolder:String = curStage;
+
+		var path:String = Paths.hscript(formattedFolder + '/script');
+		
+		var stagepath:String = Paths.hscriptstages(curStage);
+
+		var hxdata:String = "";
+		
+		var hxsdata:String = "";
+
+		if (FileSystem.exists(path))
+			hxdata = File.getContent(path);
+		
+		if (FileSystem.exists(stagepath))
+			hxsdata = File.getContent(stagepath);
+
+		if (hxdata != "" || hxsdata != "")
+		{
+			script = new Script();
+
+			script.setVariable("destroy", function()
+			{
+			});
+
+			script.setVariable("onCreate", function()
+			{
+			});
+			
+			script.setVariable("onEvent", function()
+			{
+			});
+			
+			script.setVariable("onCreatePost", function()
+			{
+			});
+			
+			script.setVariable("noteMiss", function()
+			{
+			});
+			
+			script.setVariable("goodNoteHit", function()
+			{
+			});
+
+			script.setVariable("onStartCountdown", function()
+			{
+			});
+
+			script.setVariable("onStepHit", function()
+			{
+			});
+			
+			script.setVariable("onEvent", function()
+			{
+			});
+			
+			script.setVariable("onBeatHit", function()
+			{
+			});
+
+			script.setVariable("onUpdate", function()
+			{
+			});
+			
+			script.setVariable("onUpdatePost", function()
+			{
+			});
+			
+			script.setVariable("onMoveCamera", function()
+			{
+			});
+
+			script.setVariable("import", function(lib:String, ?as:Null<String>) // Does this even work?
+			{
+				if (lib != null && Type.resolveClass(lib) != null)
+				{
+					script.setVariable(as != null ? as : lib, Type.resolveClass(lib));
+				}
+			});
+
+			script.setVariable("fromRGB", function(Red:Int, Green:Int, Blue:Int, Alpha:Int = 255)
+			{
+				return FlxColor.fromRGB(Red, Green, Blue, Alpha);
+			});
+			
+
+			script.setVariable("curStep", curStep);
+			script.setVariable("curBeat", curBeat);
+			script.setVariable("bpm", SONG.bpm);
+
+			// PRESET CLASSES
+			script.setVariable("PlayState", PlayState);
+			script.setVariable("FlxTween", FlxTween);
+			script.setVariable("FlxBackdrop", FlxBackdrop);
+			script.setVariable("FlxEase", FlxEase);
+			script.setVariable("FlxSprite", FlxSprite);
+			script.setVariable("BGSprite", BGSprite);
+			script.setVariable("Math", Math);
+			script.setVariable("FlxG", FlxG);
+			script.setVariable("FlxTimer", FlxTimer);
+			script.setVariable("Main", Main);
+			//script.setVariable("Note", Note);
+			script.setVariable("note", Note);
+			script.setVariable("Conductor", Conductor);
+			script.setVariable("Std", Std);
+			script.setVariable("FlxTextBorderStyle", FlxTextBorderStyle);
+			script.setVariable("Paths", Paths);
+			script.setVariable("CENTER", FlxTextAlign.CENTER);
+			script.setVariable("FlxTextFormat", FlxTextFormat);
+			script.setVariable("InputFormatter", InputFormatter);
+			script.setVariable("FlxTextFormatMarkerPair", FlxTextFormatMarkerPair);
+
+			script.runScript(hxdata);
+			script.runScript(hxsdata);
+		}
+	}
 
 	var curLight:Int = 0;
 }
