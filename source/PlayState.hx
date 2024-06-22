@@ -7,7 +7,6 @@ import haxe.EnumTools;
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
 import Replay.Ana;
-import flixel.group.FlxSpriteGroup;
 import Replay.Analysis;
 import flixel.input.keyboard.FlxKey;
 import haxe.Exception;
@@ -100,6 +99,7 @@ class PlayState extends MusicBeatState
 
 	public static var songPosBG:FlxSprite;
 	public static var songPosBar:FlxBar;
+	public var isDead:Bool = false;
 
 	public static var rep:Replay;
 	public static var loadRep:Bool = false;
@@ -2401,13 +2401,16 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (health <= 0)
+		if (health <= 0 && !isDead)
 		{
+			if (ScriptUtil.hasPause(scripts.executeAllFunc("gameOver")))
+				return false;
 			boyfriend.stunned = true;
 
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
+			isDead = true;
 
 			vocals.stop();
 			FlxG.sound.music.stop();
@@ -4231,7 +4234,6 @@ class PlayState extends MusicBeatState
 		// OBJECTS
 		script.set("camGame", camGame);
 		script.set("camHUD", camHUD);
-		script.set("camOther", camOther);
 
 		script.set("camFollow", camFollow);
 
@@ -4258,7 +4260,7 @@ class PlayState extends MusicBeatState
 			{
 				if (PlayState.instance.isDead)
 				{
-					GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), obj);
+					GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.bf), obj);
 				}
 				else
 				{
