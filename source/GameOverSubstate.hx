@@ -63,7 +63,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (controls.ACCEPT)
 		{
 			endBullshit();
-			PlayState.isDead = false;
 		}
 
 		if (controls.BACK)
@@ -75,7 +74,6 @@ class GameOverSubstate extends MusicBeatSubstate
 			else
 				FlxG.switchState(new FreeplayState());
 			PlayState.loadRep = false;
-			PlayState.isDead = false;
 		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
