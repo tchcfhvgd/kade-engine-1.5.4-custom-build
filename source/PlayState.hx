@@ -4199,7 +4199,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 	
-	public static inline function onAddScript(script:Script)
+	public function onAddScript(script:Script)
 	{
 		script.set("PlayState", PlayState);
 		script.set("game", PlayState.instance);
