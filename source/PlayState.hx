@@ -1428,6 +1428,34 @@ class PlayState extends MusicBeatState
 		return null;
 	}
 
+	function doDeathCheck(?skipHealthCheck:Bool = false)
+	{
+		if (((skipHealthCheck && false) || health <= 0) && !isDead)
+		{
+		    if (ScriptUtil.hasPause(scripts.executeAllFunc("gameOver")))
+				return false;
+			boyfriend.stunned = true;
+
+			persistentUpdate = false;
+			persistentDraw = false;
+			paused = true;
+			isDead = true;
+
+			vocals.stop();
+			FlxG.sound.music.stop();
+
+			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+
+			#if windows
+			// Game Over doesn't get his own variable because it's only used here
+			DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
+			#end
+
+			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		}
+		return false;
+	}
+	
 	private function handleInput(evt:KeyboardEvent):Void { // this actually handles press inputs
 
 		if (PlayStateChangeables.botPlay || loadRep || paused)
@@ -2401,28 +2429,9 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (health <= 0 && !isDead)
+		if (health <= 0)
 		{
-			if (ScriptUtil.hasPause(scripts.executeAllFunc("gameOver")))
-				return false;
-			boyfriend.stunned = true;
-
-			persistentUpdate = false;
-			persistentDraw = false;
-			paused = true;
-			isDead = true;
-
-			vocals.stop();
-			FlxG.sound.music.stop();
-
-			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-
-			#if windows
-			// Game Over doesn't get his own variable because it's only used here
-			DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
-			#end
-
-			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+	       doDeathCheck();
 		}
  		if (FlxG.save.data.resetButton)
 		{
