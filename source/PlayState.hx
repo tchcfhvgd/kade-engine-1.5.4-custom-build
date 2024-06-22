@@ -7,6 +7,7 @@ import haxe.EnumTools;
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
 import Replay.Ana;
+import flixel.group.FlxSpriteGroup;
 import Replay.Analysis;
 import flixel.input.keyboard.FlxKey;
 import haxe.Exception;
