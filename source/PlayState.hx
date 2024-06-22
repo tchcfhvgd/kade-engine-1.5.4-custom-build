@@ -18,7 +18,7 @@ import flixel.graphics.FlxGraphic;
 import openfl.utils.AssetManifest;
 import openfl.utils.AssetLibrary;
 import flixel.system.FlxAssets;
-
+import flixel.group.FlxSpriteGroup;
 import lime.app.Application;
 import lime.media.AudioContext;
 import lime.media.AudioManager;
