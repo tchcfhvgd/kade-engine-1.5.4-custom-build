@@ -92,6 +92,10 @@ class PlayState extends MusicBeatState
 	public static var bads:Int = 0;
 	public static var goods:Int = 0;
 	public static var sicks:Int = 0;
+	
+	public var boyfriendGroup:FlxSpriteGroup;
+	public var dadGroup:FlxSpriteGroup;
+	public var gfGroup:FlxSpriteGroup;
 
 	public static var songPosBG:FlxSprite;
 	public static var songPosBar:FlxBar;
@@ -4229,7 +4233,6 @@ class PlayState extends MusicBeatState
 		script.set("camOther", camOther);
 
 		script.set("camFollow", camFollow);
-		script.set("camFollowPos", camFollowPos);
 
 		// CHARACTERS
 		script.set("boyfriend", boyfriend);
